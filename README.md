@@ -544,3 +544,60 @@ current = 0  # 시작 정점
 stack.append(current)
 visitedAry.append(current)
 ```
+
+1. 과정 (정점 C 방문)
+
+```py
+next = None
+for vertex in range(4):
+    if G1.graph[current][vertex] == 1:
+        next = vertex
+        break
+
+current = next
+stack.append(current)
+visitedAry.append(current)
+```
+
+2. 과정 (정점 B 방문)
+
+```py
+next = None
+for vertex in range(4):
+    if G1.graph[current][vertex] == 1:
+        if vertex in visitedAry :    # 방문한 적이 있는 정점이면 탈락
+            pass
+        else:                        # 방문한 적이 없으면 다음 정점으로 지정
+            next = vertex
+            break
+
+current = next
+stack.append(current)
+visitedAry.append(current)
+```
+
+3. 과정 (되돌아오는 이동)
+
+```py
+next = None
+for vertex in range(4):
+    if G1.graph[current][vertex] == 1:
+        if vertex in visitedAry :    # 방문한 적이 있는 정점이면 탈락
+            pass
+        else:                        # 방문한 적이 없으면 다음 정점으로 지정
+            next = vertex
+            break
+
+if next != None:                     # 다음에 방문할 정점이 있는 경우
+    current = next
+    stack.append(current)
+    visitedAry.append(current)
+else:                                # 다음에 방문할 정점이 없는 경우
+    current = stack.pop()
+```
+
+### 최소 신장 트리 개념
+
+- **신장 트리(Spanning Tree)**는 최소 간선으로 모든 정점이 연결되는 그래프
+- 최소 비용 신장 트리는 가중치 그래프에서 만들 수 있는 신장 트리 중 **합계가 최소**인 것
+- 구현하는 방법은 **프림(Prim) 알고리즘**, **크루스컬(Kruskal) 알고리즘** 등이 있음
