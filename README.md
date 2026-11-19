@@ -419,7 +419,7 @@ None
 
 1. 정점 A와 B에 연결된 간선 구현
 
-```
+```python
 G1.graph[0][1] = 1  # (A, B) 간선
 G1.graph[0][2] = 1  # (A, C) 간선
 G1.graph[0][3] = 1  # (A, D) 간선
@@ -439,7 +439,7 @@ G1.graph[1][2] = 1  # (B, C) 간선
 
 2. 같은 방식으로 C와 D를 다음과 같이 연결
 
-```
+```python
 G1.graph[2][0] = 1  # (C, A) 간선
 G1.graph[2][1] = 1  # (C, B) 간선
 G1.graph[2][3] = 1  # (C, D) 간선
@@ -456,3 +456,91 @@ G1.graph[3][2] = 1  # (D, C) 간선
 | B = 1 |   1   |   0   |   1   |   0   |
 | C = 2 |   1   |   1   |   0   |   1   |
 | D = 3 |   1   |   0   |   1   |   0   |
+
+## 무방향 그래프 예시
+
+```python
+class graph():
+    def __init__(self, size):
+        self.SIZE = size
+        self.graph = [[0 for _ in range(size)] for _ in range(size)]
+
+G1, G3 = None, None
+
+G1 = graph(4)
+G1.graph[0][1] = 1
+G1.graph[0][2] = 1
+G1.graph[0][3] = 1
+
+G1.graph[1][0] = 1
+G1.graph[1][2] = 1
+
+G1.graph[2][0] = 1
+G1.graph[2][1] = 1
+G1.graph[2][2] = 1
+
+G1.graph[3][0] = 1
+G1.graph[3][2] = 1
+
+print('## G1 무방향 그래프 ##')
+for row in range(G1.SIZE):
+    for col in range(G1.SIZE):
+        print(G1.graph[row][col], end=" ")
+    print()
+```
+
+### 그래프 개선
+
+- 무방향 그래프를 인접 행렬로 구성핼 때 사람 이름, 도시 이름으로 구성 가능.
+  (변수명 작성할때 한글보단 영문 사용 추천 바이트 수가 틀려 오류가 발생할 수 있음.)
+
+## 깊이 우선 탐색의 구현
+
+**깊이 우선 탐색 구현을 위한 준비**
+
+- 깊이 우선 탐색을 구현하려면 스택을 사용해야 함.
+- 코드를 좀 더 간략히 하고자 별도의 `top`을 사용하지 않고 `append()`로 푸시, `pop()`으로 팝하는 스택을 사용.
+
+```py
+stack = []
+stack.append(1)  # push(1) 효과
+data = stack.pop()  # data = pop() 효과
+
+if len(stack) == 0:
+    print('스택이 비었음')
+```
+
+- visitedAry 배열에 방문 정점을 저장, visitedAry 배열에 해당 정점이 있다며 방문한 적이 있는 것으로 처리.
+
+```py
+visitedAry = []
+visitedAry.append(0)  # 정점 A(번호 0)를 방문했을 때
+visitedAry.append(1)  # 정점 B(번호 1)를 방문했을 때
+
+if 1 in visitedAry :
+    print('A는 이미 방문함')
+
+for i in visitedAry :
+    print(chr(ord('A') + i), end = " ")
+```
+
+**깊이 우선 탐색의 단계별 구현**
+
+- 간단한 그래프를 깊이 우선 탐색하는 과정 구현 예:
+
+  |   .   | A = 0 | B = 1 | C = 2 | D = 3 |
+  | :---: | :---: | :---: | :---: | :---: |
+  | A = 0 |   0   |   0   |   1   |   1   |
+  | B = 1 |   0   |   0   |   1   |   0   |
+  | C = 2 |   1   |   1   |   0   |   1   |
+  | D = 3 |   1   |   0   |   1   |   0   |
+
+- 첫 번째 정점을 방문하는 것부터 시작하여 1 ~ 6 이동을 단계별로 구현
+
+0. 첫 번째 정점 방문
+
+```py
+current = 0  # 시작 정점
+stack.append(current)
+visitedAry.append(current)
+```
